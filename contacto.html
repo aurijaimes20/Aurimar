@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Aurimar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+  .status-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:1000;padding:16px}
+  .status-modal[aria-hidden="false"]{display:flex}
+  .status-dialog{max-width:420px;width:100%;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:24px}
+  .status-dialog h3{margin:0 0 8px 0}
+  .status-actions{margin-top:16px;display:flex;gap:8px;justify-content:flex-end}
+  .status-close{position:absolute;right:16px;top:12px;border:none;background:transparent;font-size:24px;line-height:1;cursor:pointer}
+  </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h2>Aurimar</h2>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#productos" class="nav-link">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#categorias" class="nav-link">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contacto.html" class="nav-link active">Contacto</a>
+                    </li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <a href="#" class="nav-icon" id="cart-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <div class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section de Contacto -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Contáctanos</h1>
+                <p>¿Tienes alguna pregunta? Estamos aquí para ayudarte</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Información de Contacto -->
+                <div class="contact-info">
+                    <h2>Información de Contacto</h2>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Dirección</h3>
+                            <p>123 Ocean Drive<br>Miami Beach, FL 33139</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Teléfono</h3>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@Aurimar.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Horarios</h3>
+                            <p>Lunes - Viernes: 9:00 AM - 7:00 PM<br>
+                               Sábados: 10:00 AM - 6:00 PM<br>
+                               Domingos: 12:00 PM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Contacto -->
+                <div class="contact-form-container">
+    <h2>Envíanos un Mensaje</h2>
+    <form action="https://formspree.io/f/xnngpkdy" method="POST" class="contact-form" id="contact-form">
+        <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <input type="text" id="name" name="nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="tel" id="phone" name="telefono">
+        </div>
+        <div class="form-group">
+            <label for="subject">Asunto</label>
+            <select id="subject" name="asunto" required>
+                <option value="">Selecciona un asunto</option>
+                <option value="consulta">Consulta General</option>
+                <option value="pedido">Información de Pedido</option>
+                <option value="devolucion">Devolución/Cambio</option>
+                <option value="talla">Consulta de Tallas</option>
+                <option value="otro">Otro</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" name="mensaje" rows="5" required></textarea>
+        </div>
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <button type="submit" class="btn-primary">Enviar Mensaje</button>
+    </form>
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preguntas Frecuentes -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>¿Cómo sé qué talla elegir?</h3>
+                    <p>Tenemos una guía de tallas detallada en cada producto. Si tienes dudas, puedes contactarnos y te ayudaremos a encontrar la talla perfecta.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Cuáles son los tiempos de envío?</h3>
+                    <p>Los envíos estándar tardan entre 3-5 días hábiles. Ofrecemos envío express para pedidos urgentes.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Puedo devolver un producto?</h3>
+                    <p>Sí, aceptamos devoluciones dentro de los 30 días posteriores a la compra, siempre que el producto esté en condiciones originales.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Ofrecen envío internacional?</h3>
+                    <p>Actualmente enviamos solo dentro de Estados Unidos, pero estamos trabajando para expandir nuestro servicio internacionalmente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="status-modal" id="status-modal" aria-hidden="true">
+      <div class="status-dialog" role="dialog" aria-modal="true" aria-labelledby="status-title">
+          <button class="status-close" id="status-close" aria-label="Cerrar">&times;</button>
+          <h3 id="status-title">¡Mensaje enviado!</h3>
+          <p id="status-text">Te responderemos pronto.</p>
+          <div class="status-actions">
+              <button id="status-ok" class="btn-primary" type="button">Aceptar</button>
+          </div>
+      </div>
+  </div>
+
+    <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
+      <aside class="cart-sidebar" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+          <div class="cart-header">
+              <h3 id="cart-title">Tu carrito</h3>
+              <button class="close-cart" id="close-cart" aria-label="Cerrar carrito">&times;</button>
+          </div>
+          <div class="cart-items" id="cart-items"></div>
+          <div class="cart-footer">
+              <div class="cart-total">Total: $<span id="cart-total">0</span></div>
+              <button type="button" class="btn-primary checkout-btn" id="checkout-btn">Finalizar compra</button>
+              <div class="checkout-hint" id="paypal-config-warning">Configura tu Client ID de PayPal para habilitar el pago.</div>
+              <div class="paypal-buttons" id="paypal-buttons"></div>
+          </div>
+      </aside>
+  </div>
+
+  <div class="product-modal" id="product-modal" aria-hidden="true">
+      <div class="modal-content">
+          <button class="close-modal" id="close-modal" aria-label="Cerrar detalle">&times;</button>
+          <div class="modal-body" id="modal-body"></div>
+      </div>
+  </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Aurimar</h3>
+                    <p>Tu tienda de confianza para trajes de baño premium</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#productos">Productos</a></li>
+                        <li><a href="index.html#categorias">Categorías</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@Aurimar.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Miami, FL</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aurimar. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const modal = document.getElementById('status-modal');
+    const closeBtn = document.getElementById('status-close');
+    const okBtn = document.getElementById('status-ok');
+    const titleEl = document.getElementById('status-title');
+    const textEl = document.getElementById('status-text');
+
+    function openModal({ success = true, title, message }) {
+      titleEl.textContent = title || (success ? '¡Mensaje enviado!' : 'No se pudo enviar');
+      textEl.textContent = message || (success ? 'Te responderemos pronto.' : 'Ocurrió un error. Inténtalo de nuevo.');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    okBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const formData = new FormData(form);
+        // If the honeypot has any value, silently drop.
+        if (formData.get('_gotcha')) { if (submitBtn) submitBtn.disabled = false; return; }
+
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.reset();
+          openModal({ success: true, title: '¡Mensaje enviado correctamente!', message: 'Gracias por escribirnos. Te responderemos pronto.' });
+        } else {
+          let msg = 'Ocurrió un error. Inténtalo de nuevo.';
+          try {
+            const data = await response.json();
+            if (data && data.errors && Array.isArray(data.errors)) {
+              msg = data.errors.map(e => e.message).join(', ');
+            }
+          } catch (_) {}
+          openModal({ success: false, title: 'No se pudo enviar', message: msg });
+        }
+      } catch (err) {
+        openModal({ success: false, title: 'No se pudo enviar', message: 'Error de red. Revisa tu conexión e inténtalo de nuevo.' });
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  });
+  </script>
+</body>
+</html>

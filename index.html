@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurimar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .status-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:4000;padding:16px}
+        .status-modal[aria-hidden="false"]{display:flex}
+        .status-dialog{max-width:420px;width:100%;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:24px;position:relative}
+        .status-dialog h3{margin:0 0 8px 0}
+        .status-actions{margin-top:16px;display:flex;gap:8px;justify-content:flex-end}
+        .status-close{position:absolute;right:16px;top:12px;border:none;background:transparent;font-size:24px;line-height:1;cursor:pointer}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <img src="assets/images/Aurimar logo.png" alt="Aurimar logo">
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#inicio" class="nav-link active">Inicio</a></li>
+                    <li class="nav-item"><a href="#playas" class="nav-link">Playas</a></li>
+                    <li class="nav-item"><a href="#categorias" class="nav-link">Categorías</a></li>
+                    <li class="nav-item"><a href="#productos" class="nav-link">Productos</a></li>
+                    <li class="nav-item"><a href="contacto.html" class="nav-link">Contacto</a></li>
+                </ul>
+                <div class="nav-icons">
+                    <a href="#productos" class="nav-icon" id="search-btn" aria-label="Buscar productos"><i class="fas fa-search"></i></a>
+                    <a href="#" class="nav-icon" id="cart-btn" aria-label="Abrir carrito">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <div class="hamburger" aria-label="Abrir menú" role="button" tabindex="0">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="inicio">
+            <div class="hero-background" aria-hidden="true">
+                <div class="beach-elements">
+                    <div class="wave wave1"></div>
+                    <div class="wave wave2"></div>
+                    <div class="wave wave3"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-badge">Colección Resort 2024</span>
+                    <h1>Trajes de baño premium inspirados en las mejores playas del mundo</h1>
+                    <p>Descubre piezas únicas con protección UV, materiales sustentables y diseños exclusivos para que vivas el verano con estilo.</p>
+                    <a href="#productos" class="btn-primary">Explorar Colección</a>
+                    <div class="hero-features">
+                        <div class="feature"><i class="fas fa-sun"></i><span>Protección UV 50+</span></div>
+                        <div class="feature"><i class="fas fa-water"></i><span>Secado ultra rápido</span></div>
+                        <div class="feature"><i class="fas fa-leaf"></i><span>Materiales reciclados</span></div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="assets/images/Generated Image Sept 10 2025 (5).png" alt="Modelo Aurimar">
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-beaches" id="playas">
+            <div class="container">
+                <h2 class="section-title">Playas que inspiran nuestra colección</h2>
+                <div class="beaches-grid">
+                    <article class="beach-card">
+                        <img src="assets/images/Generated Image Sept 10 2025.png" alt="Caribe Mexicano">
+                        <div class="beach-info">
+                            <h3>Caribe Mexicano</h3>
+                            <p>Aguas turquesa y arenas blancas que inspiran los estampados tropicales de nuestra colección.</p>
+                            <div class="beach-tags">
+                                <span class="tag">Cancún</span>
+                                <span class="tag">Tulum</span>
+                                <span class="tag">Riviera Maya</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="beach-card">
+                        <img src="assets/images/Generated Image Sept 10 2025 (1).png" alt="South Beach">
+                        <div class="beach-info">
+                            <h3>South Beach</h3>
+                            <p>Lujo, glamour y noches interminables que se reflejan en nuestros diseños elegantes.</p>
+                            <div class="beach-tags">
+                                <span class="tag">Miami</span>
+                                <span class="tag">Lifestyle</span>
+                                <span class="tag">Vibrante</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="beach-card">
+                        <img src="assets/images/Generated Image Sept 10 2025 (3).png" alt="Santorini">
+                        <div class="beach-info">
+                            <h3>Santorini</h3>
+                            <p>Arquitectura blanca y cúpulas azules que inspiran nuestras piezas minimalistas.</p>
+                            <div class="beach-tags">
+                                <span class="tag">Grecia</span>
+                                <span class="tag">Atardeceres</span>
+                                <span class="tag">Lifestyle</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="categories" id="categorias">
+            <div class="container">
+                <h2 class="section-title">Categorías destacadas</h2>
+                <div class="categories-grid">
+                    <article class="category-card">
+                        <img src="assets/images/Generated Image Sept 10 2025 (4).png" alt="Bikinis">
+                        <h3>Bikinis</h3>
+                        <p>Sets versátiles con diseños vibrantes y soporte perfecto para cada silueta.</p>
+                    </article>
+                    <article class="category-card">
+                        <img src="assets/images/Generated Image Sept 10 2025 (5).png" alt="Trajes enteros">
+                        <h3>Trajes enteros</h3>
+                        <p>Elegancia atemporal con cortes geométricos y detalles premium.</p>
+                    </article>
+                    <article class="category-card">
+                        <img src="assets/images/Generated Image Sept 10 2025.png" alt="Tankinis">
+                        <h3>Tankinis</h3>
+                        <p>Comodidad y estilo para quienes buscan cobertura sin perder libertad.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-products" id="productos">
+            <div class="container">
+                <h2 class="section-title">Nuestros favoritos</h2>
+                <p style="text-align:center;margin-bottom:2rem;color:#555;">Descubre la colección completa y elige tu playa favorita para lucir Aurimar.</p>
+                <div id="products-grid" class="products-grid"></div>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contacto">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h2>¿Listas para el próximo destino?</h2>
+                        <p>Cuéntanos sobre tu viaje y te ayudamos a elegir el traje de baño perfecto.</p>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Showroom</h3>
+                                <p>123 Ocean Drive<br>Miami Beach, FL 33139</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h3>Teléfono</h3>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h3>Email</h3>
+                                <p>info@Aurimar.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form-container">
+                        <h2>Agenda tu asesoría</h2>
+                        <form action="https://formspree.io/f/xnngpkdy" method="POST" class="contact-form" id="contact-form">
+                            <div class="form-group">
+                                <label for="name">Nombre Completo</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Correo electrónico</label>
+                                <input type="email" id="email" name="_replyto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Mensaje</label>
+                                <textarea id="message" name="message" rows="4" required></textarea>
+                            </div>
+                            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+                            <button type="submit" class="btn-primary">Enviar mensaje</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="status-modal" id="status-modal" aria-hidden="true">
+        <div class="status-dialog" role="dialog" aria-modal="true" aria-labelledby="status-title">
+            <button class="status-close" id="status-close" aria-label="Cerrar">&times;</button>
+            <h3 id="status-title">¡Mensaje enviado!</h3>
+            <p id="status-text">Te responderemos pronto.</p>
+            <div class="status-actions">
+                <button id="status-ok" class="btn-primary" type="button">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-overlay" id="cart-overlay" aria-hidden="true">
+        <aside class="cart-sidebar" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+            <div class="cart-header">
+                <h3 id="cart-title">Tu carrito</h3>
+                <button class="close-cart" id="close-cart" aria-label="Cerrar carrito">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">Total: $<span id="cart-total">0</span></div>
+                <button type="button" class="btn-primary checkout-btn" id="checkout-btn">Checkout</button>
+                <div class="checkout-hint" id="paypal-config-warning" style="display:none;">Configura tu Client ID de PayPal para habilitar el pago.</div>
+                <div class="paypal-buttons" id="paypal-buttons" style="display:none;"></div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="product-modal" id="product-modal" aria-hidden="true">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal" aria-label="Cerrar detalle">&times;</button>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Aurimar</h3>
+                    <p>Tu tienda de confianza para trajes de baño premium</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#categorias">Categorías</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@Aurimar.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Miami, FL</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aurimar. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://js.payulatam.com/ccapi/v1/payulatam.js"></script>
+    <script>
+        // Verificar si PayU se cargó
+        window.addEventListener('load', function() {
+            console.log('PayU disponible:', typeof PayU !== 'undefined');
+            if (typeof PayU === 'undefined') {
+                console.log('PayU no se cargó correctamente');
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const modal = document.getElementById('status-modal');
+            const closeBtn = document.getElementById('status-close');
+            const okBtn = document.getElementById('status-ok');
+            const titleEl = document.getElementById('status-title');
+            const textEl = document.getElementById('status-text');
+
+            function openModal({ success = true, title, message }) {
+                titleEl.textContent = title || (success ? '¡Mensaje enviado!' : 'No se pudo enviar');
+                textEl.textContent = message || (success ? 'Te responderemos pronto.' : 'Ocurrió un error. Inténtalo de nuevo.');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+
+            closeBtn.addEventListener('click', closeModal);
+            okBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeModal();
+            });
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                if (submitBtn) submitBtn.disabled = true;
+
+                try {
+                    const formData = new FormData(form);
+                    if (formData.get('_gotcha')) {
+                        if (submitBtn) submitBtn.disabled = false;
+                        return;
+                    }
+
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        form.reset();
+                        openModal({ success: true, title: '¡Mensaje enviado correctamente!', message: 'Gracias por escribirnos. Te responderemos pronto.' });
+                    } else {
+                        let msg = 'Ocurrió un error. Inténtalo de nuevo.';
+                        try {
+                            const data = await response.json();
+                            if (data && data.errors && Array.isArray(data.errors)) {
+                                msg = data.errors.map(e => e.message).join(', ');
+                            }
+                        } catch (_) {}
+                        openModal({ success: false, title: 'No se pudo enviar', message: msg });
+                    }
+                } catch (err) {
+                    openModal({ success: false, title: 'No se pudo enviar', message: 'Error de red. Revisa tu conexión e inténtalo de nuevo.' });
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

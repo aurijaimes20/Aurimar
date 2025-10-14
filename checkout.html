@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Aurimar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#" onclick="goBackToStore(); return false;">
+                        <img src="assets/images/Aurimar logo.png" alt="Aurimar" class="logo-img">
+                    </a>
+                </div>
+                <div class="header-actions">
+                    <a href="#" onclick="goBackToStore(); return false;" class="back-link">
+                        <i class="fas fa-arrow-left"></i>
+                        Volver a la tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="checkout-main">
+        <div class="container">
+            <div class="checkout-container">
+                <!-- Checkout Form -->
+                <div class="checkout-form-section">
+                    <div class="checkout-header">
+                        <h2>Finalizar compra</h2>
+                        <p>Completa tu información para procesar el pedido</p>
+                        <div class="checkout-progress">
+                            <div class="progress-step active">
+                                <span class="step-number">1</span>
+                                <span class="step-text">Datos</span>
+                            </div>
+                            <div class="progress-step">
+                                <span class="step-number">2</span>
+                                <span class="step-text">Entrega</span>
+                            </div>
+                            <div class="progress-step">
+                                <span class="step-number">3</span>
+                                <span class="step-text">Pago</span>
+                            </div>
+                            <div class="progress-step">
+                                <span class="step-number">4</span>
+                                <span class="step-text">Confirmar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="checkout-form" class="checkout-form">
+                        <!-- 1. Tus datos -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Información personal</h3>
+                            <p class="section-description">Necesitamos tus datos para procesar el pedido y contactarte</p>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="full-name">Nombre completo *</label>
+                                    <input type="text" id="full-name" name="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone">Teléfono *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dni">Documento de identidad *</label>
+                                    <input type="text" id="dni" name="dni" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Entrega -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-truck"></i> Opciones de entrega</h3>
+                            <p class="section-description">Elige cómo quieres recibir tu pedido</p>
+                            
+                            <div class="delivery-options">
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery-type" value="home" checked>
+                                    <span class="delivery-radio"></span>
+                                    <div class="delivery-info">
+                                        <i class="fas fa-home"></i>
+                                        <div>
+                                            <span class="delivery-title">Entrega a domicilio</span>
+                                            <span class="delivery-desc">Recibe tu pedido en casa</span>
+                                            <span class="delivery-time">2-5 días hábiles</span>
+                                        </div>
+                                    </div>
+                                    <div class="delivery-price">
+                                        <span class="price-label">Desde</span>
+                                        <span class="price-value">$8,000</span>
+                                    </div>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="delivery-type" value="pickup">
+                                    <span class="delivery-radio"></span>
+                                    <div class="delivery-info">
+                                        <i class="fas fa-store"></i>
+                                        <div>
+                                            <span class="delivery-title">Retiro en tienda</span>
+                                            <span class="delivery-desc">Recoge tu pedido gratis</span>
+                                            <span class="delivery-time">Disponible inmediatamente</span>
+                                        </div>
+                                    </div>
+                                    <div class="delivery-price">
+                                        <span class="price-label">Costo</span>
+                                        <span class="price-value free">Gratis</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 3. Datos de envío a domicilio -->
+                        <div class="form-section" id="shipping-section">
+                            <h3><i class="fas fa-map-marker-alt"></i> Dirección de entrega</h3>
+                            <p class="section-description">Completa la dirección donde quieres recibir tu pedido</p>
+                                <div class="form-group">
+                                    <label for="address">Dirección completa *</label>
+                                    <input type="text" id="address" name="address" required autocomplete="shipping street-address">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">Ciudad *</label>
+                                        <input type="text" id="city" name="city" required autocomplete="shipping address-level2">
+                                    </div>
+                                <div class="form-group">
+                                    <label for="state">Departamento *</label>
+                                    <select id="state" name="state" required autocomplete="shipping address-level1">
+                                        <option value="">Seleccionar departamento</option>
+                                        <option value="Antioquia">Antioquia</option>
+                                        <option value="Atlántico">Atlántico</option>
+                                        <option value="Bogotá D.C.">Bogotá D.C.</option>
+                                        <option value="Bolívar">Bolívar</option>
+                                        <option value="Boyacá">Boyacá</option>
+                                        <option value="Caldas">Caldas</option>
+                                        <option value="Caquetá">Caquetá</option>
+                                        <option value="Cauca">Cauca</option>
+                                        <option value="Cesar">Cesar</option>
+                                        <option value="Córdoba">Córdoba</option>
+                                        <option value="Cundinamarca">Cundinamarca</option>
+                                        <option value="Huila">Huila</option>
+                                        <option value="La Guajira">La Guajira</option>
+                                        <option value="Magdalena">Magdalena</option>
+                                        <option value="Meta">Meta</option>
+                                        <option value="Nariño">Nariño</option>
+                                        <option value="Norte de Santander">Norte de Santander</option>
+                                        <option value="Quindío">Quindío</option>
+                                        <option value="Risaralda">Risaralda</option>
+                                        <option value="Santander">Santander</option>
+                                        <option value="Sucre">Sucre</option>
+                                        <option value="Tolima">Tolima</option>
+                                        <option value="Valle del Cauca">Valle del Cauca</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code">Código postal</label>
+                                <input type="text" id="postal-code" name="postalCode">
+                            </div>
+                            <div class="form-group">
+                                <label for="delivery-instructions">Instrucciones de entrega</label>
+                                <textarea id="delivery-instructions" name="deliveryInstructions" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 4. Métodos de pago -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-credit-card"></i> Método de pago</h3>
+                            <div class="payment-methods">
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="cash" checked>
+                                    <span class="payment-radio"></span>
+                                    <div class="payment-info">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div>
+                                            <span class="payment-title">Contra entrega</span>
+                                            <span class="payment-desc">Paga cuando recibas tu pedido</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="card">
+                                    <span class="payment-radio"></span>
+                                    <div class="payment-info">
+                                        <i class="fas fa-credit-card"></i>
+                                        <div>
+                                            <span class="payment-title">Tarjeta de crédito/débito</span>
+                                            <span class="payment-desc">Visa, Mastercard, American Express</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="nequi">
+                                    <span class="payment-radio"></span>
+                                    <div class="payment-info">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <div>
+                                            <span class="payment-title">Nequi</span>
+                                            <span class="payment-desc">Pago móvil rápido y seguro</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="daviplata">
+                                    <span class="payment-radio"></span>
+                                    <div class="payment-info">
+                                        <i class="fas fa-wallet"></i>
+                                        <div>
+                                            <span class="payment-title">Daviplata</span>
+                                            <span class="payment-desc">Billetera digital de Davivienda</span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="payment-method" value="pse">
+                                    <span class="payment-radio"></span>
+                                    <div class="payment-info">
+                                        <i class="fas fa-university"></i>
+                                        <div>
+                                            <span class="payment-title">PSE</span>
+                                            <span class="payment-desc">Pago seguro en línea</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 5. Datos de facturación -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-file-invoice"></i> Datos de facturación</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="same-as-shipping" checked>
+                                    <span class="checkmark"></span>
+                                    Usar la misma información para facturación
+                                </label>
+                            </div>
+                            <div id="billing-info" class="billing-info" style="display: none;">
+                                <div class="form-group">
+                                    <label for="billing-name">Nombre completo *</label>
+                                    <input type="text" id="billing-name" name="billingName" autocomplete="billing name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="billing-address">Dirección *</label>
+                                    <input type="text" id="billing-address" name="billingAddress" autocomplete="billing street-address">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="billing-city">Ciudad *</label>
+                                        <input type="text" id="billing-city" name="billingCity" autocomplete="billing address-level2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="billing-state">Departamento *</label>
+                                        <select id="billing-state" name="billingState" autocomplete="billing address-level1">
+                                            <option value="">Seleccionar departamento</option>
+                                            <option value="Antioquia">Antioquia</option>
+                                            <option value="Atlántico">Atlántico</option>
+                                            <option value="Bogotá D.C.">Bogotá D.C.</option>
+                                            <option value="Bolívar">Bolívar</option>
+                                            <option value="Boyacá">Boyacá</option>
+                                            <option value="Caldas">Caldas</option>
+                                            <option value="Caquetá">Caquetá</option>
+                                            <option value="Cauca">Cauca</option>
+                                            <option value="Cesar">Cesar</option>
+                                            <option value="Córdoba">Córdoba</option>
+                                            <option value="Cundinamarca">Cundinamarca</option>
+                                            <option value="Huila">Huila</option>
+                                            <option value="La Guajira">La Guajira</option>
+                                            <option value="Magdalena">Magdalena</option>
+                                            <option value="Meta">Meta</option>
+                                            <option value="Nariño">Nariño</option>
+                                            <option value="Norte de Santander">Norte de Santander</option>
+                                            <option value="Quindío">Quindío</option>
+                                            <option value="Risaralda">Risaralda</option>
+                                            <option value="Santander">Santander</option>
+                                            <option value="Sucre">Sucre</option>
+                                            <option value="Tolima">Tolima</option>
+                                            <option value="Valle del Cauca">Valle del Cauca</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary-section">
+                    <div class="order-summary">
+                        <h3>Resumen del pedido</h3>
+                        <div class="order-items" id="order-items">
+                            <!-- Los items se cargarán dinámicamente -->
+                        </div>
+                        <div class="order-totals">
+                            <div class="total-line">
+                                <span>Subtotal</span>
+                                <span id="subtotal">$0</span>
+                            </div>
+                            <div class="total-line" id="shipping-line">
+                                <span>Envío</span>
+                                <span id="shipping-cost">Selecciona departamento</span>
+                            </div>
+                            <div class="total-line total-final">
+                                <span>Total</span>
+                                <span id="total-amount">$0</span>
+                            </div>
+                        </div>
+                        <div id="free-shipping-message" class="free-shipping-message" style="display: none;">
+                            <i class="fas fa-gift"></i>
+                            <span>¡Envío gratis! Tu pedido supera los $100,000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Botón de finalizar -->
+                    <div class="checkout-actions">
+                        <button type="button" class="checkout-btn" id="checkout-btn">
+                            <span class="btn-text">Finalizar pedido</span>
+                            <span class="btn-total" id="checkout-total">$0</span>
+                        </button>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div class="checkout-info">
+                        <div class="info-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>Compra segura</h4>
+                                <p>Tu información está protegida con encriptación SSL</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <h4>Envío rápido</h4>
+                                <p>Entrega en 2-5 días hábiles</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-undo"></i>
+                            <div>
+                                <h4>Devoluciones</h4>
+                                <p>30 días para cambios y devoluciones</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Aurimar</h4>
+                    <p>Tu tienda de moda y estilo</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>Email: info@aurimar.com</p>
+                    <p>Tel: +57 300 123 4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Aurimar. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
