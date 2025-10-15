@@ -350,34 +350,73 @@ function createProductCard(product) {
 // Abrir modal de producto
 function openProductModal(product) {
     if (!productModal || !modalBody) return;
-    modalBody.innerHTML = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
-            <div>
-                <img src="${product.image}" alt="${product.name}" style="width: 100%; border-radius: 10px;">
-            </div>
-            <div>
-                <h2 style="color: #2c5aa0; margin-bottom: 1rem;">${product.name}</h2>
-                <div style="margin-bottom: 1rem;">
-                    ${product.oldPrice ? `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">$${formatPrice(product.oldPrice)}</span>` : ''}
-                    <span style="font-size: 1.5rem; font-weight: bold; color: #2c5aa0;">$${formatPrice(product.price)}</span>
+    
+    // Detectar si es móvil
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Layout móvil: columna vertical
+        modalBody.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <img src="${product.image}" alt="${product.name}" style="width: 100%; max-width: 200px; border-radius: 10px; margin: 0 auto; display: block;">
                 </div>
-                <p style="margin-bottom: 1.5rem; color: #666;">${product.description}</p>
-                
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Talla:</label>
-                    <select id="product-size" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-                        ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
-                    </select>
+                <div>
+                    <h2 style="color: #2c5aa0; margin-bottom: 0.5rem; text-align: center; font-size: 1.3rem;">${product.name}</h2>
+                    <div style="margin-bottom: 1rem; text-align: center;">
+                        ${product.oldPrice ? `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">$${formatPrice(product.oldPrice)}</span>` : ''}
+                        <span style="font-size: 1.3rem; font-weight: bold; color: #2c5aa0;">$${formatPrice(product.price)}</span>
+                    </div>
+                    <p style="margin-bottom: 1rem; color: #666; text-align: center; font-size: 0.9rem; line-height: 1.4;">${product.description}</p>
+                    
+                    <div style="margin-bottom: 0.8rem;">
+                        <label style="display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem;">Talla:</label>
+                        <select id="product-size" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; background: white;">
+                            ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem;">Color:</label>
+                        <select id="product-color" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; background: white;">
+                            ${product.colors.map(color => `<option value="${color}">${color}</option>`).join('')}
+                        </select>
+                    </div>
+        `;
+    } else {
+        // Layout desktop: grid 2 columnas
+        modalBody.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+                <div>
+                    <img src="${product.image}" alt="${product.name}" style="width: 100%; border-radius: 10px;">
                 </div>
+                <div>
+                    <h2 style="color: #2c5aa0; margin-bottom: 1rem;">${product.name}</h2>
+                    <div style="margin-bottom: 1rem;">
+                        ${product.oldPrice ? `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">$${formatPrice(product.oldPrice)}</span>` : ''}
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #2c5aa0;">$${formatPrice(product.price)}</span>
+                    </div>
+                    <p style="margin-bottom: 1.5rem; color: #666;">${product.description}</p>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Talla:</label>
+                        <select id="product-size" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Color:</label>
+                        <select id="product-color" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            ${product.colors.map(color => `<option value="${color}">${color}</option>`).join('')}
+                        </select>
+                    </div>
+        `;
+    }
                 
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Color:</label>
-                    <select id="product-color" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-                        ${product.colors.map(color => `<option value="${color}">${color}</option>`).join('')}
-                    </select>
-                </div>
-                
-                <button class="add-to-cart" onclick="addToCartFromModal(${product.id})" style="width: 100%; padding: 15px; background: #2c5aa0; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+    // Continuar con el resto del código...
+    modalBody.innerHTML += `
+                    <button class="add-to-cart" onclick="addToCartFromModal(${product.id})" style="width: 100%; padding: 12px; background: #2c5aa0; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
                     Agregar al Carrito - $${formatPrice(product.price)}
                 </button>
             </div>

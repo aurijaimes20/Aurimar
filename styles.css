@@ -338,6 +338,14 @@ body {
     text-align: center;
 }
 
+.hero-content .mobile-only {
+    display: none;
+}
+
+.hero .desktop-only {
+    display: block;
+}
+
 .hero-content h1 {
     font-family: 'Playfair Display', serif;
     font-size: 3.75rem;
@@ -349,7 +357,7 @@ body {
 
 .hero-content p {
     font-size: 1.2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     opacity: 0.9;
 }
 
@@ -1104,6 +1112,7 @@ body {
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
+        max-width: calc(100vw - 30px);
     }
 
     .hamburger {
@@ -1147,43 +1156,149 @@ body {
     .hero {
         flex-direction: column;
         text-align: center;
-        padding: 100px 15px 40px;
+        padding: 100px 15px 50px;
         min-height: auto;
+    }
+
+    .hero .container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
     }
 
     .hero-content {
         margin-right: 0;
         margin-bottom: 2rem;
         width: 100%;
+        text-align: center;
+    }
+
+    .hero-content .mobile-only {
+        display: block;
+        margin: 1.5rem auto 2rem auto;
+    }
+
+    .hero     .desktop-only {
+        display: none;
+    }
+
+    /* Modal mejorado para móvil */
+    .modal-content {
+        max-width: 90vw;
+        width: 90vw;
+        margin: 10px auto;
+        max-height: 80vh;
+        border-radius: 15px;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .close-modal {
+        top: 10px;
+        right: 15px;
+        font-size: 1.8rem;
+    }
+
+    /* Mejorar el contenido del modal en móvil */
+    .modal-body > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        max-width: 200px !important;
+        margin: 0 auto !important;
+        border-radius: 10px !important;
+    }
+
+    .modal-body h2 {
+        font-size: 1.3rem !important;
+        text-align: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .modal-body p {
+        font-size: 0.9rem !important;
+        line-height: 1.4 !important;
+        text-align: center !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .modal-body select,
+    .modal-body input {
+        font-size: 0.95rem !important;
+        padding: 10px !important;
+        border-radius: 6px !important;
+        margin-bottom: 0.5rem !important;
+        background: white !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .modal-body button {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 1rem !important;
+        border-radius: 8px !important;
+        margin-top: 0.5rem !important;
+    }
+
+    /* Asegurar que los selectores se vean igual */
+    .modal-body select:focus {
+        outline: none !important;
+        border-color: #2c5aa0 !important;
+        box-shadow: 0 0 0 2px rgba(44, 90, 160, 0.2) !important;
+    }
+
+    /* Asegurar que el modal tenga suficiente espacio para los dropdowns */
+    .modal-content {
+        overflow: visible !important;
+    }
+
+    .modal-body {
+        overflow: visible !important;
     }
 
     .hero-content h1 {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
         line-height: 1.2;
         margin-bottom: 1rem;
+        text-align: center !important;
     }
 
     .hero-content p {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
         line-height: 1.5;
+        text-align: center !important;
     }
 
     .hero-badge {
         font-size: 0.9rem;
         padding: 8px 16px;
-        margin-bottom: 1rem;
+        margin-bottom: 2.5rem;
+        text-align: center !important;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .btn-primary {
         padding: 12px 24px;
         font-size: 1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 4rem;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-image {
         width: 100%;
-        max-width: 300px;
+        max-width: 280px;
         margin: 0 auto;
     }
 
@@ -1191,12 +1306,15 @@ body {
         width: 100%;
         height: auto;
         border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
 
     .hero-features {
         flex-direction: column;
         gap: 1rem;
         margin-top: 1.5rem;
+        align-items: center;
+        text-align: center;
     }
 
     .feature {
@@ -1209,13 +1327,17 @@ body {
     }
 
     .products-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1rem;
+        max-width: calc(100vw - 30px);
+        margin: 0 auto;
     }
 
     .categories-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+        max-width: calc(100vw - 30px);
+        margin: 0 auto;
     }
 
     .contact-grid {
@@ -1234,6 +1356,8 @@ body {
     .beaches-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
+        max-width: calc(100vw - 30px);
+        margin: 0 auto;
     }
 
     .price-box {
@@ -1243,7 +1367,8 @@ body {
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 10px;
+        padding: 0 15px;
+        max-width: calc(100vw - 30px);
     }
 
     .nav-container {
@@ -1279,7 +1404,7 @@ body {
     }
 
     .hero-image {
-        max-width: 250px;
+        max-width: 240px;
     }
 
     .feature {
@@ -2294,9 +2419,9 @@ body {
 /* Responsive para checkout */
 @media (max-width: 768px) {
     .checkout-container {
-        max-width: 100%;
-        padding: 15px 10px;
-        margin: 10px;
+        max-width: calc(100vw - 30px);
+        padding: 15px 15px;
+        margin: 10px auto;
         gap: 15px;
     }
     
@@ -2310,9 +2435,9 @@ body {
     }
     
     .checkout-header {
-        padding: 15px 10px;
-        max-width: 100%;
-        margin-bottom: 20px;
+        padding: 15px 15px;
+        max-width: calc(100vw - 30px);
+        margin: 0 auto 20px auto;
     }
     
     .checkout-header h2 {
@@ -2442,7 +2567,7 @@ body {
     }
     
     .checkout-btn {
-        padding: 15px 20px;
+        padding: 15px 15px;
         font-size: 16px;
     }
     
