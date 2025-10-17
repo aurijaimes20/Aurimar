@@ -1359,14 +1359,14 @@ body {
     }
 
     .clear-cart-btn {
-        padding: 8px 12px;
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
     }
 
     .checkout-btn {
-        padding: 8px 12px;
-        font-size: 0.85rem;
+        padding: 10px 16px;
+        font-size: 0.9rem;
     }
 
     .products-grid {
