@@ -1225,21 +1225,33 @@ body {
 
     /* Modal mejorado para móvil */
     .modal-content {
-        max-width: 90vw;
-        width: 90vw;
-        margin: 10px auto;
-        max-height: 80vh;
-        border-radius: 15px;
+        max-width: 100vw;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        max-height: 100vh;
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 
     .modal-body {
         padding: 1rem;
+        height: 100vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding-top: calc(1rem + env(safe-area-inset-top));
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom));
     }
 
     .close-modal {
-        top: 10px;
+        top: calc(10px + env(safe-area-inset-top));
         right: 15px;
         font-size: 1.8rem;
+        z-index: 10;
     }
 
     /* Mejorar el contenido del modal en móvil */
