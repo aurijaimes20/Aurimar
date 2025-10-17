@@ -177,6 +177,7 @@ const cartTotal = document.getElementById('cart-total');
 const cartCountElement = document.querySelector('.cart-count');
 const cartBtn = document.getElementById('cart-btn');
 const closeCart = document.getElementById('close-cart');
+const clearCartBtn = document.getElementById('clear-cart');
 const productModal = document.getElementById('product-modal');
 const closeModal = document.getElementById('close-modal');
 const modalBody = document.getElementById('modal-body');
@@ -475,6 +476,11 @@ function updateCartDisplay() {
     }
 
     cartItems.innerHTML = '';
+
+    // Mostrar/ocultar botón de limpiar carrito
+    if (clearCartBtn) {
+        clearCartBtn.style.display = cart.length > 0 ? 'flex' : 'none';
+    }
 
     if (cart.length === 0) {
         cartItems.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Tu carrito está vacío</p>';
@@ -1233,6 +1239,19 @@ function setupEventListeners() {
 
     if (closeCart) {
         closeCart.addEventListener('click', closeCartOverlay);
+    }
+
+    if (clearCartBtn) {
+        clearCartBtn.addEventListener('click', function() {
+            if (cart.length > 0) {
+                if (confirm('¿Estás seguro de que quieres limpiar todo el carrito?')) {
+                    clearCart();
+                    showNotification('Carrito limpiado');
+                }
+            } else {
+                showNotification('El carrito ya está vacío');
+            }
+        });
     }
 
     if (cartOverlay) {
