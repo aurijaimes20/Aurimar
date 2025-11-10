@@ -129,10 +129,9 @@ let cart = [];
 let cartCount = 0;
 
 const paymentConfig = {
-    payuMerchantId: (window?.AURIMAR_PAYMENTS?.payuMerchantId || '508029').trim(),
-    payuApiKey: (window?.AURIMAR_PAYMENTS?.payuApiKey || '4Vj8eK4rloUd272L48hsrarnUA').trim(),
-    payuAccountId: (window?.AURIMAR_PAYMENTS?.payuAccountId || '512321').trim(),
-    currency: (window?.AURIMAR_PAYMENTS?.currency || 'COP').toUpperCase()
+    publicKey: (window?.AURIMAR_PAYMENTS?.mercadoPagoPublicKey || 'TEST-12345678-1234-1234-1234-123456789012').trim(),
+    currency: (window?.AURIMAR_PAYMENTS?.currency || 'COP').toUpperCase(),
+    sandbox: true
 };
 
 // Configuración de envíos

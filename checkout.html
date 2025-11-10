@@ -394,6 +394,24 @@
         </div>
     </footer>
 
+    <!-- Configuración de Mercado Pago -->
+    <!-- INSTRUCCIONES: 
+         1. Ve a https://www.mercadopago.com.co/developers/panel
+         2. Crea una aplicación o usa una existente
+         3. Copia tu Access Token (empieza con TEST- para pruebas)
+         4. Reemplaza 'TU_ACCESS_TOKEN_AQUI' con tu token real
+         5. Descomenta las líneas de abajo
+    -->
+    <!--
+    <script>
+      window.AURIMAR_PAYMENTS = {
+        mercadoPagoAccessToken: 'TU_ACCESS_TOKEN_AQUI'
+      };
+    </script>
+    -->
+    
+    <!-- SDK de Mercado Pago -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script src="checkout.js"></script>
 </body>
 </html>

@@ -1,9 +1,9 @@
-// Configuración de pagos
+// Configuración de pagos - Mercado Pago
 const paymentConfig = {
-    payuMerchantId: (window?.AURIMAR_PAYMENTS?.payuMerchantId || '508029').trim(),
-    payuApiKey: (window?.AURIMAR_PAYMENTS?.payuApiKey || '4Vj8eK4rloUd272L48hsrarnUA').trim(),
-    payuAccountId: (window?.AURIMAR_PAYMENTS?.payuAccountId || '512321').trim(),
-    currency: (window?.AURIMAR_PAYMENTS?.currency || 'COP').toUpperCase()
+    publicKey: (window?.AURIMAR_PAYMENTS?.mercadoPagoPublicKey || 'TEST-12345678-1234-1234-1234-123456789012').trim(),
+    currency: (window?.AURIMAR_PAYMENTS?.currency || 'COP').toUpperCase(),
+    // Para producción, cambiar a false
+    sandbox: true
 };
 
 // Configuración de envíos
@@ -42,27 +42,238 @@ let cart = [];
 let currentShippingCost = 0;
 let deliveryType = 'home';
 
-// Elementos del DOM
-const checkoutForm = document.getElementById('checkout-form');
-const orderItems = document.getElementById('order-items');
-const subtotalElement = document.getElementById('subtotal');
-const shippingCostElement = document.getElementById('shipping-cost');
-const shippingLine = document.getElementById('shipping-line');
-const totalAmountElement = document.getElementById('total-amount');
-const checkoutTotalElement = document.getElementById('checkout-total');
-const freeShippingMessage = document.getElementById('free-shipping-message');
-const stateSelect = document.getElementById('state');
-const sameAsShippingCheckbox = document.getElementById('same-as-shipping');
-const billingInfo = document.getElementById('billing-info');
-const checkoutBtn = document.getElementById('checkout-btn');
-const shippingSection = document.getElementById('shipping-section');
+// Elementos del DOM (se inicializarán después de que el DOM cargue)
+let checkoutForm;
+let orderItems;
+let subtotalElement;
+let shippingCostElement;
+let shippingLine;
+let totalAmountElement;
+let checkoutTotalElement;
+let freeShippingMessage;
+let stateSelect;
+let sameAsShippingCheckbox;
+let billingInfo;
+let checkoutBtn;
+let shippingSection;
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar elementos del DOM
+    checkoutForm = document.getElementById('checkout-form');
+    orderItems = document.getElementById('order-items');
+    subtotalElement = document.getElementById('subtotal');
+    shippingCostElement = document.getElementById('shipping-cost');
+    shippingLine = document.getElementById('shipping-line');
+    totalAmountElement = document.getElementById('total-amount');
+    checkoutTotalElement = document.getElementById('checkout-total');
+    freeShippingMessage = document.getElementById('free-shipping-message');
+    stateSelect = document.getElementById('state');
+    sameAsShippingCheckbox = document.getElementById('same-as-shipping');
+    billingInfo = document.getElementById('billing-info');
+    checkoutBtn = document.getElementById('checkout-btn');
+    shippingSection = document.getElementById('shipping-section');
+    
+    console.log('Elementos del DOM inicializados:', {
+        checkoutForm: !!checkoutForm,
+        checkoutBtn: !!checkoutBtn
+    });
+    
     loadCartFromStorage();
     updateOrderSummary();
     setupEventListeners();
+    handlePaymentResponse();
 });
+
+// Manejar respuesta de Mercado Pago después del pago
+function handlePaymentResponse() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('status');
+    const paymentId = urlParams.get('payment_id');
+    const preferenceId = urlParams.get('preference_id');
+    
+    if (paymentStatus) {
+        if (paymentStatus === 'approved') {
+            // Pago aprobado
+            showPaymentSuccessModal(paymentId || preferenceId || 'N/A');
+            // Limpiar carrito después de pago exitoso
+            setTimeout(() => {
+                localStorage.removeItem('aurimar-cart');
+                localStorage.removeItem('aurimar-last-transaction');
+            }, 3000);
+        } else if (paymentStatus === 'failure' || paymentStatus === 'rejected') {
+            // Pago rechazado
+            showPaymentErrorModal('El pago fue rechazado. Por favor intenta con otro método de pago.');
+        } else if (paymentStatus === 'pending') {
+            // Pago pendiente
+            showPaymentPendingModal(paymentId || preferenceId || 'N/A');
+        } else {
+            // Error desconocido
+            showPaymentErrorModal('Hubo un problema procesando tu pago. Por favor contacta a soporte.');
+        }
+        
+        // Limpiar parámetros de la URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}
+
+function showPaymentSuccessModal(referenceCode) {
+    const modal = document.createElement('div');
+    modal.className = 'payment-success-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        ">
+            <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
+            <h2 style="color: #2c5aa0; margin-bottom: 15px; font-family: 'Playfair Display', serif;">
+                ¡Pago exitoso!
+            </h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                Tu pago ha sido procesado correctamente. Recibirás un correo de confirmación pronto.
+            </p>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+                <strong>Código de referencia:</strong><br>
+                <code style="color: #2c5aa0;">${referenceCode || 'N/A'}</code>
+            </div>
+            <button onclick="window.location.href='index.html'" style="
+                background: #2c5aa0;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                Volver a la tienda
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function showPaymentErrorModal(message) {
+    const modal = document.createElement('div');
+    modal.className = 'payment-error-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        ">
+            <div style="font-size: 60px; margin-bottom: 20px;">❌</div>
+            <h2 style="color: #e74c3c; margin-bottom: 15px; font-family: 'Playfair Display', serif;">
+                Error en el pago
+            </h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                ${message}
+            </p>
+            <button onclick="this.parentElement.parentElement.remove()" style="
+                background: #2c5aa0;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                Entendido
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function showPaymentPendingModal(referenceCode) {
+    const modal = document.createElement('div');
+    modal.className = 'payment-pending-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        ">
+            <div style="font-size: 60px; margin-bottom: 20px;">⏳</div>
+            <h2 style="color: #f39c12; margin-bottom: 15px; font-family: 'Playfair Display', serif;">
+                Pago pendiente
+            </h2>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.6;">
+                Tu pago está siendo procesado. Te notificaremos por correo cuando se confirme.
+            </p>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+                <strong>Código de referencia:</strong><br>
+                <code style="color: #2c5aa0;">${referenceCode || 'N/A'}</code>
+            </div>
+            <button onclick="window.location.href='index.html'" style="
+                background: #2c5aa0;
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                Volver a la tienda
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
 
 function loadCartFromStorage() {
     const savedCart = localStorage.getItem('aurimar-cart');
@@ -76,7 +287,12 @@ function loadCartFromStorage() {
 
 function setupEventListeners() {
     // Event listener para el formulario
-    checkoutForm.addEventListener('submit', handleCheckoutSubmit);
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', handleCheckoutSubmit);
+        console.log('Event listener del formulario configurado');
+    } else {
+        console.error('checkoutForm no encontrado en setupEventListeners');
+    }
     
     // Event listeners para tipo de entrega
     const deliveryOptions = document.querySelectorAll('input[name="delivery-type"]');
@@ -85,14 +301,51 @@ function setupEventListeners() {
     });
     
     // Event listener para el dropdown de departamentos
-    stateSelect.addEventListener('change', function() {
-        updateShippingCalculation();
-    });
+    if (stateSelect) {
+        stateSelect.addEventListener('change', function() {
+            updateShippingCalculation();
+            // Limpiar error si hay
+            clearFieldError(stateSelect);
+        });
+    }
     
     // Event listener para el checkbox de facturación
-    sameAsShippingCheckbox.addEventListener('change', function() {
-        toggleBillingInfo();
+    if (sameAsShippingCheckbox) {
+        sameAsShippingCheckbox.addEventListener('change', function() {
+            toggleBillingInfo();
+        });
+    }
+    
+    // Agregar listeners a todos los campos del formulario para limpiar errores al escribir
+    setupFieldErrorClearing();
+}
+
+function setupFieldErrorClearing() {
+    // Obtener todos los campos del formulario
+    const formFields = checkoutForm ? checkoutForm.querySelectorAll('input, select, textarea') : [];
+    
+    formFields.forEach(field => {
+        // Limpiar error cuando el usuario empiece a escribir
+        field.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                clearFieldError(this);
+            }
+        });
+        
+        // Limpiar error cuando el usuario cambie el valor (para selects)
+        field.addEventListener('change', function() {
+            if (this.value.trim() !== '') {
+                clearFieldError(this);
+            }
+        });
+        
+        // Limpiar error cuando el campo reciba foco
+        field.addEventListener('focus', function() {
+            // No limpiar inmediatamente, solo cuando empiece a escribir
+        });
     });
+    
+    console.log(`Listeners de limpieza de errores agregados a ${formFields.length} campos`);
 }
 
 function handleDeliveryTypeChange() {
@@ -215,11 +468,29 @@ function toggleBillingInfo() {
 
 function handleCheckoutSubmit(e) {
     e.preventDefault();
+    console.log('handleCheckoutSubmit llamado');
+    
+    // Verificar que hay productos en el carrito
+    if (cart.length === 0) {
+        showValidationAlert('Tu carrito está vacío. Agrega productos antes de finalizar el pedido.');
+        if (checkoutBtn) {
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = '<span class="btn-text">Finalizar pedido</span><span class="btn-total" id="checkout-total">$' + formatPrice(calculateCartTotal() + currentShippingCost) + '</span>';
+        }
+        return;
+    }
     
     // Validar formulario
     if (!validateForm()) {
+        console.log('Validación falló');
+        if (checkoutBtn) {
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = '<span class="btn-text">Finalizar pedido</span><span class="btn-total" id="checkout-total">$' + formatPrice(calculateCartTotal() + currentShippingCost) + '</span>';
+        }
         return;
     }
+    
+    console.log('Formulario validado, procesando pago...');
     
     // Recopilar datos del formulario
     const formData = new FormData(checkoutForm);
@@ -299,8 +570,21 @@ function showFieldError(field, message) {
 }
 
 function clearFieldError(field) {
+    if (!field) return;
+    
+    // Remover clase de error
     field.classList.remove('error');
-    const existingError = field.parentNode.querySelector('.field-error');
+    
+    // Remover estilos inline de error si existen
+    if (field.style.borderColor === 'rgb(231, 76, 60)' || field.style.borderColor === '#e74c3c') {
+        field.style.borderColor = '';
+    }
+    if (field.style.boxShadow && field.style.boxShadow.includes('231, 76, 60')) {
+        field.style.boxShadow = '';
+    }
+    
+    // Remover mensaje de error si existe
+    const existingError = field.parentNode ? field.parentNode.querySelector('.field-error') : null;
     if (existingError) {
         existingError.remove();
     }
@@ -322,8 +606,8 @@ function processPayment(customerData) {
     if (customerData.paymentMethod === 'cash') {
         showCashPaymentConfirmation(customerData, total);
     } else {
-        // Para otros métodos de pago, usar PayU
-        createPayUForm(total, customerData);
+        // Para otros métodos de pago, usar Mercado Pago
+        createMercadoPagoPayment(total, customerData);
     }
 }
 
@@ -398,66 +682,310 @@ function showCashPaymentConfirmation(customerData, total) {
     document.body.appendChild(modal);
 }
 
-function createPayUForm(total, customerData) {
-    const referenceCode = 'aurimar_' + Date.now();
-    
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://checkout.payulatam.com/ppp-web-gateway-payu/';
-    form.target = '_blank';
-    form.style.display = 'none';
-    
-    const params = {
-        'merchantId': paymentConfig.payuMerchantId,
-        'accountId': paymentConfig.payuAccountId,
-        'description': `Compra en Aurimar - ${cart.length} producto(s)`,
-        'referenceCode': referenceCode,
-        'amount': total,
-        'tax': '0',
-        'taxReturnBase': '0',
-        'currency': paymentConfig.currency,
-        'signature': generatePayUSignature(referenceCode, total),
-        'test': '1',
-        'buyerEmail': customerData.email,
-        'buyerFullName': customerData.name,
-        'buyerPhone': customerData.phone,
-        'buyerDocument': customerData.dni,
-        'responseUrl': window.location.href,
-        'confirmationUrl': window.location.href
-    };
-    
-    // Agregar datos de envío si es a domicilio
-    if (customerData.deliveryType === 'home') {
-        params['shippingAddress'] = customerData.address;
-        params['shippingCity'] = customerData.city;
-        params['shippingCountry'] = 'CO';
-        params['shippingState'] = customerData.state;
-        params['shippingPostalCode'] = customerData.postal || '000000';
-    }
-    
-    Object.keys(params).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = params[key];
-        form.appendChild(input);
+function createMercadoPagoPayment(total, customerData) {
+    console.log('createMercadoPagoPayment llamado con:', {
+        total,
+        paymentMethod: customerData.paymentMethod,
+        email: customerData.email,
+        name: customerData.name
     });
     
-    document.body.appendChild(form);
-    form.submit();
+    // Validar que tenemos los datos necesarios
+    if (!customerData.email || !customerData.name) {
+        showValidationAlert('Por favor completa todos los campos requeridos');
+        if (checkoutBtn) {
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = '<span class="btn-text">Finalizar pedido</span><span class="btn-total" id="checkout-total">$' + formatPrice(total) + '</span>';
+        }
+        return;
+    }
     
-    setTimeout(() => {
-        document.body.removeChild(form);
-    }, 1000);
+    // Guardar información de la transacción
+    const transactionData = {
+        amount: total,
+        customerData: customerData,
+        cart: cart,
+        timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('aurimar-last-transaction', JSON.stringify(transactionData));
     
-    // Mostrar mensaje de éxito
-    showCheckoutSuccess(customerData, total);
+    // Preparar datos para crear la preferencia
+    const preferenceData = {
+        items: cart.map(item => ({
+            title: item.name + (item.size ? ` - Talla: ${item.size}` : '') + (item.color ? ` - Color: ${item.color}` : ''),
+            quantity: item.quantity,
+            unit_price: item.price,
+            currency_id: paymentConfig.currency
+        })),
+        payer: {
+            name: customerData.name,
+            email: customerData.email,
+            phone: {
+                area_code: '',
+                number: customerData.phone || ''
+            },
+            identification: {
+                type: 'CC',
+                number: customerData.dni || ''
+            }
+        },
+        back_urls: {
+            success: window.location.origin + window.location.pathname + '?status=approved',
+            failure: window.location.origin + window.location.pathname + '?status=failure',
+            pending: window.location.origin + window.location.pathname + '?status=pending'
+        },
+        auto_return: 'approved',
+        external_reference: 'aurimar_' + Date.now(),
+        statement_descriptor: 'AURIMAR'
+    };
+    
+    // Agregar costo de envío si aplica
+    const shippingCost = deliveryType === 'home' ? calculateShippingCost(customerData.state) : 0;
+    if (shippingCost > 0) {
+        preferenceData.items.push({
+            title: 'Costo de envío',
+            quantity: 1,
+            unit_price: shippingCost,
+            currency_id: paymentConfig.currency
+        });
+    }
+    
+    // Agregar dirección de envío si es a domicilio
+    if (customerData.deliveryType === 'home' && customerData.address) {
+        preferenceData.payer.address = {
+            street_name: customerData.address,
+            street_number: '',
+            zip_code: customerData.postal || '000000'
+        };
+    }
+    
+    // Configurar método de pago específico si se seleccionó
+    const paymentMethod = customerData.paymentMethod || 'card';
+    
+    // IMPORTANTE: Mercado Pago muestra automáticamente PSE, Nequi, Daviplata y tarjetas
+    // cuando la moneda es COP y la cuenta está en Colombia.
+    // No es necesario configurar nada especial, solo asegurarse de que:
+    // 1. La moneda sea COP (ya está configurada)
+    // 2. La cuenta de Mercado Pago esté en Colombia
+    // 3. El cliente seleccione el método en el checkout de Mercado Pago
+    
+    // Guardar el método de pago seleccionado para referencia
+    preferenceData.metadata = {
+        payment_method_selected: paymentMethod,
+        store: 'Aurimar'
+    };
+    
+    // Mostrar modal de carga
+    showMercadoPagoLoading();
+    
+    // Crear preferencia usando la API de Mercado Pago
+    // IMPORTANTE: En producción, esto DEBE hacerse en tu servidor por seguridad
+    // Aquí mostramos cómo hacerlo desde el cliente (solo para desarrollo)
+    createMercadoPagoPreference(preferenceData);
 }
 
-function generatePayUSignature(referenceCode, amount) {
-    const apiKey = paymentConfig.payuApiKey;
-    const merchantId = paymentConfig.payuMerchantId;
-    return btoa(`${apiKey}~${merchantId}~${referenceCode}~${amount}~${paymentConfig.currency}`);
+function showMercadoPagoLoading() {
+    const modal = document.createElement('div');
+    modal.id = 'mp-loading-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            margin: 20px;
+        ">
+            <div style="font-size: 50px; margin-bottom: 20px;">💳</div>
+            <h3 style="color: #2c5aa0; margin-bottom: 15px;">Preparando tu pago...</h3>
+            <div style="margin: 20px 0;">
+                <div class="spinner" style="
+                    border: 4px solid #f3f3f3;
+                    border-top: 4px solid #2c5aa0;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto;
+                "></div>
+            </div>
+            <p style="color: #666;">Serás redirigido a Mercado Pago en un momento...</p>
+        </div>
+    `;
+    
+    // Agregar animación de spinner
+    if (!document.getElementById('spinner-styles')) {
+        const style = document.createElement('style');
+        style.id = 'spinner-styles';
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(modal);
+}
+
+async function createMercadoPagoPreference(preferenceData) {
+    try {
+        // Opción 1: Si tienes un servidor con endpoint configurado
+        // Descomenta esto y configura tu endpoint:
+        /*
+        const response = await fetch('/api/create-preference', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(preferenceData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error al crear preferencia');
+        }
+        
+        const { id } = await response.json();
+        window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${id}`;
+        return;
+        */
+        
+        // Opción 2: Para pruebas rápidas - usar directamente desde el cliente
+        // NOTA: Esto requiere tu Access Token (solo para desarrollo)
+        // En producción, SIEMPRE usa un servidor
+        
+        const accessToken = window?.AURIMAR_PAYMENTS?.mercadoPagoAccessToken;
+        
+        console.log('Access Token configurado:', !!accessToken, accessToken ? 'Sí' : 'No');
+        
+        if (accessToken && accessToken !== 'TU_ACCESS_TOKEN_AQUI' && accessToken.trim() !== '') {
+            console.log('Intentando crear preferencia de Mercado Pago...');
+            
+            // Crear preferencia directamente desde el cliente (solo para desarrollo)
+            const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(preferenceData)
+            });
+            
+            console.log('Respuesta de Mercado Pago:', response.status, response.statusText);
+            
+            if (response.ok) {
+                const preference = await response.json();
+                console.log('Preferencia creada:', preference.id);
+                console.log('Redirigiendo a Mercado Pago...');
+                
+                // Cerrar modal de carga
+                const loadingModal = document.getElementById('mp-loading-modal');
+                if (loadingModal) loadingModal.remove();
+                
+                // Redirigir a Mercado Pago
+                window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${preference.id}`;
+                return;
+            } else {
+                // Error al crear la preferencia
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Error de Mercado Pago:', errorData);
+                throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
+            }
+        }
+        
+        // Si no hay Access Token configurado, mostrar instrucciones
+        console.log('No hay Access Token configurado, mostrando instrucciones');
+        showMercadoPagoSetupInstructions(preferenceData);
+        
+    } catch (error) {
+        console.error('Error creando preferencia:', error);
+        
+        // Cerrar modal de carga
+        const loadingModal = document.getElementById('mp-loading-modal');
+        if (loadingModal) loadingModal.remove();
+        
+        // Mostrar error específico
+        let errorMessage = 'Error al procesar el pago. Por favor intenta de nuevo.';
+        if (error.message) {
+            errorMessage = `Error: ${error.message}`;
+        }
+        
+        showValidationAlert(errorMessage);
+        
+        if (checkoutBtn) {
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = '<span class="btn-text">Finalizar pedido</span><span class="btn-total" id="checkout-total">$' + formatPrice(calculateCartTotal() + currentShippingCost) + '</span>';
+        }
+    }
+}
+
+function showMercadoPagoSetupInstructions(preferenceData) {
+    const modal = document.getElementById('mp-loading-modal');
+    if (modal) {
+        const total = preferenceData.items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0);
+        
+        modal.innerHTML = `
+            <div style="
+                background: white;
+                padding: 40px;
+                border-radius: 20px;
+                text-align: center;
+                max-width: 600px;
+                margin: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            ">
+                <div style="font-size: 50px; margin-bottom: 20px;">💳</div>
+                <h3 style="color: #2c5aa0; margin-bottom: 15px;">Configuración de Mercado Pago</h3>
+                <p style="color: #666; margin-bottom: 20px; text-align: left;">
+                    Para activar los pagos, necesitas:
+                </p>
+                <ol style="text-align: left; color: #666; margin-bottom: 20px; line-height: 1.8;">
+                    <li>Crear una cuenta en <a href="https://www.mercadopago.com.co" target="_blank" style="color: #2c5aa0;">Mercado Pago</a></li>
+                    <li>Obtener tu <strong>Access Token</strong> desde <a href="https://www.mercadopago.com.co/developers/panel" target="_blank" style="color: #2c5aa0;">el panel de desarrolladores</a></li>
+                    <li><strong>Opción rápida (solo pruebas):</strong> Agrega tu Access Token en checkout.html antes del script:
+                        <pre style="background: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.85em; overflow-x: auto;"><code>&lt;script&gt;
+  window.AURIMAR_PAYMENTS = {
+    mercadoPagoAccessToken: 'TU_ACCESS_TOKEN_AQUI'
+  };
+&lt;/script&gt;</code></pre>
+                    </li>
+                    <li><strong>Opción segura (producción):</strong> Usa el archivo <code>api/create-preference.js</code> en tu servidor</li>
+                </ol>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
+                    <strong>Total a pagar:</strong> $${formatPrice(total)}<br>
+                    <small style="color: #666;">${cart.length} producto(s)</small>
+                </div>
+                <div style="background: #e8f4fd; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 0.9em;">
+                    <strong>💡 Tip:</strong> Puedes usar servicios como <a href="https://vercel.com" target="_blank" style="color: #2c5aa0;">Vercel</a> o <a href="https://netlify.com" target="_blank" style="color: #2c5aa0;">Netlify</a> para crear el endpoint fácilmente.
+                </div>
+                <button onclick="this.parentElement.parentElement.remove(); checkoutBtn.disabled = false; checkoutBtn.innerHTML = '<span class=\\'btn-text\\'>Finalizar pedido</span><span class=\\'btn-total\\' id=\\'checkout-total\\'>$${formatPrice(total)}</span>';" style="
+                    background: #2c5aa0;
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 10px;
+                ">
+                    Entendido
+                </button>
+            </div>
+        `;
+    }
 }
 
 function showCheckoutSuccess(customerData, total) {
@@ -719,7 +1247,34 @@ function showSuccessMessage() {
 document.addEventListener('DOMContentLoaded', function() {
     const finalizeButton = document.getElementById('checkout-btn');
     if (finalizeButton) {
-        finalizeButton.addEventListener('click', handleFinalizeOrder);
+        // Conectar el botón con el submit del formulario
+        finalizeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Botón clickeado, checkoutForm:', checkoutForm);
+            
+            if (checkoutForm) {
+                // Disparar el evento submit del formulario
+                const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+                checkoutForm.dispatchEvent(submitEvent);
+            } else {
+                console.error('checkoutForm no encontrado');
+                // Si el formulario no se encuentra, intentar procesar directamente
+                if (cart.length === 0) {
+                    showValidationAlert('Tu carrito está vacío');
+                    return;
+                }
+                // Intentar obtener los datos del formulario manualmente
+                const formElement = document.getElementById('checkout-form');
+                if (formElement) {
+                    const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+                    formElement.dispatchEvent(submitEvent);
+                } else {
+                    showValidationAlert('Error: No se encontró el formulario');
+                }
+            }
+        });
+    } else {
+        console.error('Botón checkout-btn no encontrado');
     }
     
     // Manejar el checkbox de "misma información para facturación"
