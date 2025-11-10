@@ -479,7 +479,7 @@ function updateCartDisplay() {
 
     // Mostrar/ocultar botón de limpiar carrito
     if (clearCartBtn) {
-        clearCartBtn.style.display = cart.length > 0 ? 'flex' : 'none';
+        clearCartBtn.style.display = cart.length > 0 ? 'block' : 'none';
     }
 
     if (cart.length === 0) {
