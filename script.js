@@ -331,14 +331,23 @@ function createProductCard(product) {
                     ${product.oldPrice ? `<div class="discount-box">-${Math.round((1 - product.price/product.oldPrice) * 100)}%</div>` : ''}
                 </div>
             </div>
-            <button class="add-to-cart" onclick="addToCart(${product.id})">
+            <button class="add-to-cart" data-product-id="${product.id}">
                 <i class="fas fa-shopping-cart"></i>
                 Agregar al Carrito
             </button>
         </div>
     `;
     
-    // Agregar evento de clic para abrir modal
+    // Agregar evento de clic al botón para abrir modal
+    const addToCartBtn = card.querySelector('.add-to-cart');
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openProductModal(product);
+        });
+    }
+    
+    // Agregar evento de clic para abrir modal al resto de la tarjeta
     card.addEventListener('click', (e) => {
         if (!e.target.classList.contains('add-to-cart') && !e.target.closest('.add-to-cart')) {
             openProductModal(product);
